@@ -1,10 +1,21 @@
-import { useState } from "react";
-import "./App.css";
+import Navbar from "./components/navbar";
+// import Home from "./pages/Home";
+// import About from "./pages/About";
+// import Skills from "./pages/Skills";
+// import Projects from "./pages/Projects";
+// import Contact from "./pages/Contact";
 
-function App() {
-  const [] = useState(0);
-
-  return <></>;
-}
+const App: React.FC = () => {
+  return (
+    <div className="bg-white dark:bg-black text-black dark:text-white transition">
+      <Navbar />
+      {/* <Home />
+      <About />
+      <Skills />
+      <Projects />
+      <Contact /> */}
+    </div>
+  );
+};
 
 export default App;
