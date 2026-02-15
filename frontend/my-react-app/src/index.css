@@ -2,14 +2,4 @@
 
 /* ✅ Tailwind v4 dark mode activation */
 @custom-variant dark (&:where(.dark, .dark *));
-
-/* ================= DARK MODE VARIABLES ================= */
-:root {
-  --dark-bg: #020617;
-  --dark-card: #020617;
-}
-
-/* Optional smooth animation */
-html {
-  transition: background-color 0.3s, color 0.3s;
-}
+ 

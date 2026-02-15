@@ -9,7 +9,6 @@ import Contact from "./pages/Contact";
 const App: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-(--dark-bg) text-black dark:text-white transition-colors">
-
       <Navbar />
       <Home />
       <About />

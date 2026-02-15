@@ -1,32 +1,100 @@
-import React from 'react'
+import React from "react";
 
-
-interface Props { title: string; desc: string; img?: string }
-
-
-const ProjectCard: React.FC<Props> = ({ title, desc, img }) => {
-    return (
-        <div className="bg-white dark:bg-(--dark-card) rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            <div className="h-48 relative bg-gray-100">
-                {img ? <img src={img} alt={title} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gray-200" />}
-                <div className="absolute inset-0 bg-black/10"></div>
-            </div>
-            <div className="p-6">
-                <h3 className="text-xl font-bold mb-4">{title}</h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-4 h-16">{desc}</p>
-                <div className="flex flex-wrap gap-2 my-6">
-                    <span className="px-3 py-1 bg-gray-100 dark:bg-(--dark-background) text-gray-600 rounded-full text-sm">HTML5</span>
-                    <span className="px-3 py-1 bg-gray-100 dark:bg-(--dark-background) text-gray-600 rounded-full text-sm">CSS3</span>
-                    <span className="px-3 py-1 bg-gray-100 dark:bg-(--dark-background) text-gray-600 rounded-full text-sm">JavaScript</span>
-                </div>
-                <div className="flex gap-4">
-                    <a href="#" className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors">Youtube</a>
-                    <a href="#" className="flex items-center text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">Code</a>
-                </div>
-            </div>
-        </div>
-    )
+interface Props {
+  title: string;
+  desc: string;
+  img: string;
+  tags?: string[];
+  github: string;
 }
 
+const ProjectCard: React.FC<Props> = ({
+  title,
+  desc,
+  img,
+  tags = [],
+  github,
+}) => {
+  return (
+    <div
+      className="
+        relative
+        bg-white/80 dark:bg-white/5
+        backdrop-blur-xl
+        rounded-2xl
+        shadow-xl
+        border border-gray-200 dark:border-white/10
+        overflow-hidden
+        hover:-translate-y-2
+        hover:shadow-2xl
+        transition-all duration-300
+      "
+    >
+      {/* Gradient Glow */}
+      <div className="absolute inset-0 bg-linear-to-br from-blue-500/10 to-purple-500/10 pointer-events-none" />
 
-export default ProjectCard
+      {/* IMAGE */}
+      <div className="h-56 w-full overflow-hidden">
+        <img
+          src={img}
+          className="w-full h-full object-cover hover:scale-105 transition duration-500"
+        />
+      </div>
+
+      {/* CONTENT */}
+      <div className="p-6 relative z-10">
+        <h3 className="text-2xl font-bold mb-3 dark:text-white">{title}</h3>
+
+        <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+          {desc}
+        </p>
+
+        {/* TAGS */}
+        {tags.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-5">
+            {tags.map((t) => (
+              <span
+                key={t}
+                className="
+                  px-3 py-1 
+                  rounded-full 
+                  text-sm 
+                  bg-gray-200 dark:bg-white/10 
+                  border border-gray-300 dark:border-white/20 
+                  text-gray-700 dark:text-gray-300
+                "
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* BUTTON */}
+        <div className="flex justify-between items-center">
+          <a
+            href={github}
+            target="_blank"
+            className="
+              px-6 py-2 
+              rounded-lg 
+              bg-blue-600 hover:bg-blue-500 
+              text-white 
+              font-semibold
+              shadow-lg shadow-blue-500/30
+              transition
+            "
+          >
+            View Code
+          </a>
+
+          <span className="text-gray-500 dark:text-gray-300 text-sm">
+            💻 GitHub Project
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProjectCard;
