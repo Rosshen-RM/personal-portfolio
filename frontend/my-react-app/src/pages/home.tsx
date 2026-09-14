@@ -1,185 +1,227 @@
-import React, { useEffect, useRef } from "react";
-import { Brush, Code2, Zap, Smartphone } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import {
+  Sparkles,
+  Copy,
+  Check,
+  ArrowRight,
+  Terminal,
+} from "lucide-react";
+import SpotlightCard from "../components/ui/SpotlightCard";
+import { useToast } from "../components/ui/Toast";
+import ScrollReveal from "../components/animations/ScrollReveal";
+import TiltCard from "../components/animations/TiltCard";
+import { personalInfo, heroRoles, toolkitData } from "../data/portfolioData";
 
-const toolkit = [
-  {
-    icon: Brush,
-    title: "Modern UI Design",
-    desc: "Experience in building scalable web applications using React, Tailwind CSS, Spring Boot, REST APIs and PostgreSQL",
-    gradient: "from-blue-100 to-white dark:from-white/10 dark:to-white/5",
-  },
-  {
-    icon: Code2,
-    title: "Legacy Modernization",
-    desc: "Converted complex Excel & Desktop applications into modern web platforms improving performance & usability",
-    gradient: "from-purple-100 to-white dark:from-white/10 dark:to-white/5",
-  },
-  {
-    icon: Zap,
-    title: "Performance Optimization",
-    desc: "Ensuring fast load times and smooth experiences through efficient code and asset optimization.",
-    gradient: "from-yellow-100 to-white dark:from-white/10 dark:to-white/5",
-  },
-  {
-    icon: Smartphone,
-    title: "Collaboration & Quality",
-    desc: "Experience working with teams, writing clean code, reviews, version control and best practices.",
-    gradient: "from-green-100 to-white dark:from-white/10 dark:to-white/5",
-  },
-];
+export const Home: React.FC = () => {
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [displayedText, setDisplayedText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const { showToast } = useToast();
 
-const Home: React.FC = () => {
-  const terminalRef = useRef<HTMLSpanElement | null>(null);
-
+  // Typewriter effect
   useEffect(() => {
-    const git = terminalRef.current;
-    if (!git) return;
+    const currentRole = heroRoles[roleIndex];
+    const typingSpeed = isDeleting ? 35 : 75;
 
-    const text = "git clone https://github.com/Rosshen-RM/";
-    let i = 0;
+    const timer = setTimeout(() => {
+      if (!isDeleting) {
+        if (displayedText.length < currentRole.length) {
+          setDisplayedText(currentRole.slice(0, displayedText.length + 1));
+        } else {
+          setTimeout(() => setIsDeleting(true), 2000);
+        }
+      } else {
+        if (displayedText.length > 0) {
+          setDisplayedText(currentRole.slice(0, displayedText.length - 1));
+        } else {
+          setIsDeleting(false);
+          setRoleIndex((prev) => (prev + 1) % heroRoles.length);
+        }
+      }
+    }, typingSpeed);
 
-   git.textContent = "";
-    const timer = setInterval(() => {
-      git.textContent += text[i] || "";
-      i++;
-      if (i > text.length) clearInterval(timer);
-    }, 45);
+    return () => clearTimeout(timer);
+  }, [displayedText, isDeleting, roleIndex]);
 
-    return () => clearInterval(timer);
-  }, []);
+  const copyCloneCommand = () => {
+    navigator.clipboard.writeText(personalInfo.cloneRepoCommand);
+    setCopied(true);
+    showToast("Repository clone command copied to clipboard!", "success");
+    setTimeout(() => setCopied(false), 2500);
+  };
 
   return (
-    <>
-      {/* ================= HERO ================= */}
-      <section
-        id="home"
-        className="
-          relative min-h-screen
-          bg-white text-black
-         dark:bg-[#050816]   dark:text-white
-          overflow-hidden flex flex-col
-          pt-28 md:pt-36 pb-20
-        "
-      >
-        <div className="max-w-5xl mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-6xl font-extrabold mb-6">
-            The{" "}
-            <span className="bg-linear-to-r from-blue-500 via-purple-500 to-cyan-400 bg-clip-text text-transparent">
-              React Developer
-            </span>{" "}
-            For The Web
+    <div id="home" className="relative overflow-hidden pt-28 md:pt-36 pb-20">
+      {/* Cyberpunk Grid Background */}
+      <div className="absolute inset-0 bg-cyber-grid opacity-30 pointer-events-none -z-10" />
+
+      {/* Cyber Neon Glow Spheres */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-[#0afcdb]/10 blur-[140px] rounded-full -z-10 pointer-events-none animate-pulse-cyan" />
+      <div className="absolute top-1/3 right-10 w-[400px] h-[300px] bg-indigo-600/15 blur-[130px] rounded-full -z-10 pointer-events-none" />
+
+      {/* ================= HERO SECTION ================= */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
+        {/* Telemetry Status Badge */}
+        <ScrollReveal direction="down" delay={50}>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 dark:bg-black/80 border border-cyan-500/40 dark:border-[#0afcdb]/40 text-cyan-700 dark:text-[#0afcdb] text-xs font-mono font-bold tracking-widest uppercase mb-8 backdrop-blur-md shadow-sm dark:shadow-[0_0_15px_rgba(10,252,219,0.2)] animate-float">
+            <span className="w-2 h-2 rounded-full bg-cyan-500 dark:bg-[#0afcdb] animate-ping" />
+            <span>SYS // AVAILABLE FOR OPPORTUNITIES</span>
+            <Sparkles size={13} className="text-cyan-600 dark:text-[#0afcdb]" />
+          </div>
+        </ScrollReveal>
+
+        {/* Hero Title */}
+        <ScrollReveal direction="up" delay={100}>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-6 text-slate-900 dark:text-white uppercase font-sans">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-950 via-slate-800 to-slate-600 dark:from-white dark:via-gray-200 dark:to-gray-400">
+              {personalInfo.name}
+            </span>
+            <br />
+            <span className="text-2xl sm:text-4xl md:text-5xl font-mono font-bold text-slate-700 dark:text-gray-300 tracking-normal block mt-2">
+              <span className="text-cyan-600 dark:text-[#0afcdb] border-b border-cyan-500/40 dark:border-[#0afcdb]/40 pb-1">
+                {displayedText}
+              </span>
+              <span className="animate-pulse text-cyan-600 dark:text-[#0afcdb]">_</span>
+            </span>
           </h1>
+        </ScrollReveal>
 
-          <p className="text-lg md:text-2xl text-gray-600 dark:text-gray-400 mb-10 max-w-3xl mx-auto">
-            Creating{" "}
-            <span className="font-semibold text-gray-800 dark:text-gray-200">
-              high-quality web applications
-            </span>{" "}
-            with modern tools and best practices for exceptional user
-            experiences.
+        {/* Hero Subtitle */}
+        <ScrollReveal direction="up" delay={150}>
+          <p className="text-base sm:text-lg md:text-xl text-slate-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed font-sans">
+            Crafting high-performance web experiences, modernizing legacy enterprise
+            applications, and building full-stack platforms with clean code.
           </p>
+        </ScrollReveal>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-14">
+        {/* Action Buttons */}
+        <ScrollReveal direction="up" delay={200}>
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-16 font-mono">
             <a
               href="#projects"
-              className="
-                px-8 py-3 rounded-lg font-semibold
-                bg-blue-600 hover:bg-blue-500
-                shadow-lg shadow-blue-500/30
-                transition
-              "
+              className="w-full sm:w-auto px-8 py-4 rounded-lg font-bold bg-[#0afcdb] hover:bg-[#38ef7d] text-black shadow-md dark:shadow-[0_0_24px_rgba(10,252,219,0.4)] hover:shadow-lg dark:hover:shadow-[0_0_35px_rgba(10,252,219,0.6)] transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer clip-cyber-button hover:scale-105 active:scale-95 text-xs tracking-wider"
             >
-              View Projects
+              <span>EXPLORE CASE STUDIES</span>
+              <ArrowRight
+                size={16}
+                className="group-hover:translate-x-1 transition-transform"
+              />
             </a>
 
             <a
-              href="#about"
-              className="
-                px-8 py-3 rounded-lg font-semibold
-                border border-black/80 dark:border-white/80
-                bg-white/10 dark:bg-white/5
-                hover:bg-black/5 dark:hover:bg-white/10
-                backdrop-blur transition
-              "
+              href="#contact"
+              className="w-full sm:w-auto px-8 py-4 rounded-lg font-bold border border-slate-300 dark:border-white/20 bg-white/80 dark:bg-black/60 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-800 dark:text-white backdrop-blur-md transition-all duration-300 cursor-pointer clip-cyber-button hover:border-cyan-500 dark:hover:border-[#0afcdb]/60 hover:scale-105 active:scale-95 text-xs tracking-wider shadow-sm"
             >
-              Learn More
+              GET IN TOUCH
             </a>
           </div>
+        </ScrollReveal>
 
-          {/* Github Terminal */}
-          <div
-            className="
-              max-w-3xl mx-auto rounded-xl overflow-hidden shadow-xl
-              bg-gray-200 dark:bg-black/60
-              border border-black/10 dark:border-white/10
-            "
-          >
-            <div className="flex items-center gap-2 px-4 py-3 bg-gray-300 dark:bg-black/70">
-              <span className="w-3 h-3 rounded-full bg-red-500" />
-              <span className="w-3 h-3 rounded-full bg-yellow-500" />
-              <span className="w-3 h-3 rounded-full bg-green-500" />
-            </div>
-
-            <div className="px-6 py-5 font-mono text-left text-sm md:text-base">
-              <span className="text-green-600 dark:text-green-400">$</span>{" "}
-              <span ref={terminalRef} />
-              <span className="animate-pulse">▌</span>
-            </div>
-          </div>
-        </div>
-
-        {/* ================= TOOLKIT ================= */}
-        
-          <div className="max-w-7xl mx-auto px-6 mt-40  ">
-            <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">
-              What's in my Toolkit
-            </h2>
-
-            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 text-center mb-16">
-              I build scalable, reliable and user–focused web applications
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-              {toolkit.map((item) => (
-                <div
-                  key={item.title}
-                  className={`
-                  rounded-3xl p-8 shadow-xl border border-gray-200
-                  bg-linear-to-br ${item.gradient}
-                  hover:-translate-y-1 transition-all duration-300
-                  dark:border-white/10 dark:shadow-black/50
-                `}
+        {/* Interactive Github Terminal with Scanline Frame */}
+        <ScrollReveal direction="up" delay={250}>
+          <TiltCard maxTilt={3} scale={1.01} className="max-w-2xl mx-auto">
+            <div className="rounded-2xl overflow-hidden shadow-2xl border border-slate-700 dark:border-white/12 bg-black/90 text-gray-100 text-left relative">
+              {/* Header HUD Bar */}
+              <div className="flex items-center justify-between px-4 py-3 bg-black/95 border-b border-white/10">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#0afcdb]" />
+                  <span className="text-xs text-gray-400 font-mono ml-2 flex items-center gap-1.5">
+                    <Terminal size={12} className="text-[#0afcdb]" />
+                    <span>bash ~ rosshen-portfolio</span>
+                  </span>
+                </div>
+                <button
+                  onClick={copyCloneCommand}
+                  title="Copy to clipboard"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-mono bg-white/10 hover:bg-[#0afcdb] hover:text-black text-gray-200 transition cursor-pointer border border-white/10"
                 >
-                  {/* ICON */}
-                  <div className="w-12 h-12 rounded-xl bg-white/70 dark:bg-white/10 flex items-center justify-center shadow mb-6">
-                    <item.icon
-                      size={28}
-                      className="text-blue-500 dark:text-blue-400"
-                    />
+                  {copied ? (
+                    <>
+                      <Check size={12} className="text-emerald-400" />
+                      <span className="text-emerald-400 font-bold">COPIED</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy size={12} />
+                      <span>COPY</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              <div className="p-5 font-mono text-xs sm:text-sm overflow-x-auto space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-[#0afcdb] font-bold">$</span>
+                  <span className="text-gray-200">{personalInfo.cloneRepoCommand}</span>
+                </div>
+                <div className="text-gray-400 text-xs">
+                  &gt; STACK: React 19 • TypeScript • Tailwind CSS • Vite • Spring Boot
+                </div>
+              </div>
+            </div>
+          </TiltCard>
+        </ScrollReveal>
+      </section>
+
+
+
+      {/* ================= TOOLKIT & EXPERTISE ================= */}
+      <section id="toolkit" className="max-w-6xl mx-auto px-4 sm:px-6 mt-32">
+        <ScrollReveal direction="up" className="text-center max-w-2xl mx-auto mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-cyan-500/10 dark:bg-[#0afcdb]/10 border border-cyan-500/30 dark:border-[#0afcdb]/30 text-cyan-700 dark:text-[#0afcdb] text-xs font-mono font-semibold uppercase tracking-widest mb-3">
+            CORE PROTOCOLS
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-4">
+            TECHNICAL DISCIPLINES
+          </h2>
+          <p className="text-slate-600 dark:text-gray-400 text-sm sm:text-base font-mono">
+            How I architect, engineer, and deliver resilient enterprise software
+          </p>
+        </ScrollReveal>
+
+        {/* Equal-Height Grid Alignment */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch">
+          {toolkitData.map((item, idx) => (
+            <ScrollReveal key={item.title} direction="up" delay={idx * 75} className="flex h-full">
+              <TiltCard maxTilt={4} scale={1.015} className="w-full h-full">
+                <SpotlightCard
+                  spotlightColor="rgba(10, 252, 219, 0.18)"
+                  className="p-8 group h-full flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center mb-6 shadow-xs group-hover:border-cyan-500/50 dark:group-hover:border-[#0afcdb]/50 group-hover:scale-110 transition-all">
+                      <item.icon size={24} className="text-cyan-600 dark:text-[#0afcdb]" />
+                    </div>
+
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3 font-mono">
+                      {item.title}
+                    </h3>
+
+                    <p className="text-slate-600 dark:text-gray-400 text-sm sm:text-base leading-relaxed mb-6 font-sans">
+                      {item.desc}
+                    </p>
                   </div>
 
-                  <h3 className="text-xl font-bold mb-4">{item.title}</h3>
-
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
-                    {item.desc}
-                  </p>
-
-                  <button
-                    className="
-                    px-6 py-2 rounded-lg bg-blue-600 hover:bg-blue-500
-                    text-white font-semibold shadow-lg shadow-blue-500/30 transition
-                  "
-                  >
-                    Know More
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      
-    </>
+                  <div className="flex flex-wrap gap-2 pt-4 border-t border-slate-200 dark:border-white/8 mt-auto font-mono">
+                    {item.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2.5 py-0.5 rounded text-xs font-medium bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-gray-300 border border-slate-200 dark:border-white/10 group-hover:border-cyan-500/30 dark:group-hover:border-[#0afcdb]/30 transition-colors"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </SpotlightCard>
+              </TiltCard>
+            </ScrollReveal>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 };
 
