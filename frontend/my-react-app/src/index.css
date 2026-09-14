@@ -1,5 +1,144 @@
 @import "tailwindcss";
 
-/* ✅ Tailwind v4 dark mode activation */
+/* Tailwind v4 dark mode activation */
 @custom-variant dark (&:where(.dark, .dark *));
- 
+
+:root {
+  --color-cyber-cyan: #0afcdb;
+  --color-cyber-cyan-glow: rgba(10, 252, 219, 0.35);
+  --color-cyber-violet: #6366f1;
+  --dark-bg: #000000;
+  --dark-card: #05090e;
+  --dark-card-border: rgba(255, 255, 255, 0.08);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+/* Custom modern cyber scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0afcdb;
+  border-radius: 9999px;
+  box-shadow: 0 0 10px rgba(10, 252, 219, 0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #38ef7d;
+}
+
+/* Cyberpunk Corner Chamfer Clip Paths */
+.clip-cyber-corner {
+  clip-path: polygon(
+    0 0,
+    calc(100% - 14px) 0,
+    100% 14px,
+    100% 100%,
+    14px 100%,
+    0 calc(100% - 14px)
+  );
+}
+
+.clip-cyber-button {
+  clip-path: polygon(
+    0 0,
+    calc(100% - 8px) 0,
+    100% 8px,
+    100% 100%,
+    8px 100%,
+    0 calc(100% - 8px)
+  );
+}
+
+.clip-cyber-card-top {
+  clip-path: polygon(
+    0 0,
+    calc(100% - 20px) 0,
+    100% 20px,
+    100% 100%,
+    0 100%
+  );
+}
+
+/* Scanline and Grid Utilities */
+.bg-cyber-grid {
+  background-image: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.03) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.bg-cyber-dots {
+  background-image: radial-gradient(
+    rgba(10, 252, 219, 0.15) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulse-cyan {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(10, 252, 219, 0.2);
+    opacity: 0.8;
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(10, 252, 219, 0.5);
+    opacity: 1;
+  }
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(1000%);
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-pulse-cyan {
+  animation: pulse-cyan 3s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
+}
+
+.animate-scanline {
+  animation: scanline 8s linear infinite;
+}

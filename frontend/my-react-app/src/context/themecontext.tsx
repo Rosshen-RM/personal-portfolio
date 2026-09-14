@@ -7,16 +7,21 @@ interface ThemeContextType {
   toggle: () => void;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const ThemeContext = createContext<ThemeContextType>({
-  theme: "light",
+  theme: "dark",
   toggle: () => {},
 });
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const useTheme = () => React.useContext(ThemeContext);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [theme, setTheme] = useState<Theme>(() => {
-    return (localStorage.getItem("theme") as Theme) || "light";
+    const saved = localStorage.getItem("theme") as Theme | null;
+    return saved === "light" || saved === "dark" ? saved : "dark";
   });
 
   useEffect(() => {
@@ -24,8 +29,14 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
     if (theme === "dark") {
       root.classList.add("dark");
+      document.body.classList.add("dark");
+      root.setAttribute("data-theme", "dark");
+      root.style.colorScheme = "dark";
     } else {
       root.classList.remove("dark");
+      document.body.classList.remove("dark");
+      root.setAttribute("data-theme", "light");
+      root.style.colorScheme = "light";
     }
 
     localStorage.setItem("theme", theme);
@@ -41,3 +52,4 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     </ThemeContext.Provider>
   );
 };
+
